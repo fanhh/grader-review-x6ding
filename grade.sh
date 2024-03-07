@@ -14,3 +14,47 @@ echo 'Finished cloning'
 
 # Then, add here code to compile and run, and do any post-processing of the
 # tests
+
+
+if [ -f "student-submission/ListExamples.java" ]; 
+then
+  echo "File exists"
+else
+    echo "ListExamples.java does not exist"
+    exit 1
+fi
+
+# jars
+cp -r lib grading-area
+
+# ListExamples
+cp student-submission/ListExamples.java grading-area/
+
+
+# TestListExamples
+cp TestListExamples.java grading-area/
+
+
+# Compile
+javac -cp $CPATH grading-area/*.java
+
+if [ $? -ne 0 ]; then
+    echo "Compilation failed"
+    exit 1
+else
+    echo "Compilation successful"
+fi
+
+# Run
+cd grading-area
+java -cp $CPATH org.junit.runner.JUnitCore TestListExamples
+
+
+if [ $? -ne 0 ]; then
+    echo "Tests failed"
+    exit 1
+else
+    echo "Tests passed"
+    exit 0
+fi
+
